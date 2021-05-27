@@ -8,14 +8,15 @@ import (
 func main() {
 	// fmt.Println(config.Config.Port)
 	// fmt.Println(config.Config.SQLDriver)
-	// fmt.Println(config.Config.DbName)
+	// fmt.Println(config.Config.DbUser)
+	// fmt.Println(config.Config.DbPassword)
 	// fmt.Println(config.Config.LogFile)
 
 	// log.Println("Log test")
 
 	u := &models.User{}
-	u.Name = "test_name"
-	u.Email = "test@gmail.com"
+	u.Name = "test_name2"
+	u.Email = "test2@gmail.com"
 	u.PassWord = "testtest"
 	fmt.Println(u)
 
