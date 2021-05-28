@@ -44,3 +44,30 @@ func (u *User) CreateUser() (err error) {
 	}
 	return err
 }
+
+func GetUser(id int) (user User, err error) {
+	// Connent to DB
+	Db, err = connectDB()
+	defer Db.Close()
+
+	user = User{}
+	cmd :=
+		`SELECT id, uuid, name, email, password, created_at, updated_at
+	FROM users
+	WHERE id =$1`
+
+	err = Db.QueryRow(cmd, id).Scan(
+		&user.ID,
+		&user.UUID,
+		&user.Name,
+		&user.Email,
+		&user.PassWord,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+	)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return user, err
+}
