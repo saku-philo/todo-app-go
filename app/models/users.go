@@ -87,3 +87,19 @@ func (u *User) UpdateUser() (err error) {
 	}
 	return err
 }
+
+func (u *User) DeleteUser() (err error) {
+	// Connent to DB
+	Db, err = connectDB()
+	defer Db.Close()
+
+	cmd := `UPDATE users
+		SET is_deleted = TRUE, deleted_at =$1
+		WHERE id =$2`
+
+	_, err = Db.Exec(cmd, time.Now(), u.ID)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
+}
