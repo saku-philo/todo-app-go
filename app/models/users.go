@@ -71,3 +71,19 @@ func GetUser(id int) (user User, err error) {
 	}
 	return user, err
 }
+
+func (u *User) UpdateUser() (err error) {
+	// Connent to DB
+	Db, err = connectDB()
+	defer Db.Close()
+
+	cmd := `UPDATE users
+		SET name =$1, email =$2, updated_at =$3
+		WHERE id =$4`
+
+	_, err = Db.Exec(cmd, u.Name, u.Email, u.UpdatedAt, u.ID)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
+}
