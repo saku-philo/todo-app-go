@@ -17,6 +17,7 @@ var err error
 
 const (
 	tableNameUser = "users"
+	tableNameTodo = "todos"
 )
 
 func connectDB() (db *sql.DB, err error) {
