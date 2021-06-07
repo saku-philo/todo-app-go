@@ -131,3 +131,17 @@ func (t *Todo) UpdateTodo() error {
 	}
 	return err
 }
+
+func (t *Todo) DeleteTodo() error {
+	// Connent to DB
+	Db, err = connectDB()
+	defer Db.Close()
+
+	cmd := `DELETE from todos WHERE id =$1`
+
+	_, err = Db.Exec(cmd, t.ID)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
+}
