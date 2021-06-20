@@ -8,5 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(255) NOT NULL,
   created_at TIMESTAMP,
   updated_at TIMESTAMP,
+  is_deleted BOOLEAN DEFAULT FALSE,
+  deleted_at TIMESTAMP NULL,
   PRIMARY KEY     (id)
 );
