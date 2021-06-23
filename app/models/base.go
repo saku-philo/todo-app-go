@@ -16,8 +16,9 @@ var Db *sql.DB
 var err error
 
 const (
-	tableNameUser = "users"
-	tableNameTodo = "todos"
+	tableNameUser    = "users"
+	tableNameTodo    = "todos"
+	tableNameSession = "sessions"
 )
 
 func connectDB() (db *sql.DB, err error) {

@@ -17,6 +17,15 @@ type User struct {
 	UpdatedAt time.Time
 }
 
+type Session struct {
+	ID        int
+	UUID      string
+	Email     string
+	UserID    int
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
 func (u *User) CreateUser() (err error) {
 	// Connent to DB
 	Db, err = connectDB()
@@ -102,4 +111,26 @@ func (u *User) DeleteUser() (err error) {
 		log.Fatalln(err)
 	}
 	return err
+}
+
+func GetUserByEmail(email string) (user User, err error) {
+	// Connent to DB
+	Db, err = connectDB()
+	defer Db.Close()
+
+	user = User{}
+	cmd := `SELECT id, uuid, name, email, password, created_at, updated_at
+		FROM users
+		WHERE email =$1`
+
+	err = Db.QueryRow(cmd, email).Scan(
+		&user.ID,
+		&user.UUID,
+		&user.Name,
+		&user.Email,
+		&user.PassWord,
+		&user.CreatedAt,
+		&user.UpdatedAt,
+	)
+	return user, err
 }
