@@ -134,3 +134,36 @@ func GetUserByEmail(email string) (user User, err error) {
 	)
 	return user, err
 }
+
+func (u *User) CreateSession() (session Session, err error) {
+	// Connent to DB
+	Db, err = connectDB()
+	defer Db.Close()
+	session = Session{}
+	cmd1 := `INSERT INTO sessions (
+		uuid,
+		email,
+		user_id,
+		created_at,
+		updated_at) values ($1, $2, $3, $4, $5)`
+
+	_, err = Db.Exec(cmd1, createUUID(), u.Email, u.ID, time.Now(), time.Now())
+	if err != nil {
+		log.Println(err)
+	}
+
+	cmd2 := `SELECT id, uuid, email, user_id, created_at, updated_at
+		FROM sessions
+		WHERE user_id =$1 and email =$2`
+
+	err = Db.QueryRow(cmd2, u.ID, u.Email).Scan(
+		&session.ID,
+		&session.UUID,
+		&session.Email,
+		&session.UserID,
+		&session.CreatedAt,
+		&session.UpdatedAt,
+	)
+
+	return session, err
+}
