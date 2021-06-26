@@ -167,3 +167,33 @@ func (u *User) CreateSession() (session Session, err error) {
 
 	return session, err
 }
+
+func (sess *Session) CheckSession() (valid bool, err error) {
+	// Connent to DB
+	Db, err = connectDB()
+	defer Db.Close()
+
+	cmd := `SELECT id, uuid, email, user_id, created_at, updated_at
+		FROM sessions
+		WHERE uuid =$1`
+
+	err = Db.QueryRow(cmd, sess.UUID).Scan(
+		&sess.ID,
+		&sess.UUID,
+		&sess.Email,
+		&sess.UserID,
+		&sess.CreatedAt,
+		&sess.UpdatedAt,
+	)
+
+	if err != nil {
+		valid = false
+		return
+	}
+
+	if sess.ID != 0 {
+		valid = true
+	}
+
+	return valid, err
+}
