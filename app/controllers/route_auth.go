@@ -50,8 +50,9 @@ func authenticate(w http.ResponseWriter, r *http.Request) {
 			HttpOnly: true,
 		}
 		http.SetCookie(w, &cookie)
-		http.Redirect(w, r, "/login", 302)
+		http.Redirect(w, r, "/", 302)
 	} else {
+		log.Println(user.Name + ": Input password is wrong.")
 		http.Redirect(w, r, "/login", 302)
 	}
 }
