@@ -197,3 +197,17 @@ func (sess *Session) CheckSession() (valid bool, err error) {
 
 	return valid, err
 }
+
+func (sess *Session) DeleteSessionByUUID() (err error) {
+	// Connent to DB
+	Db, err = connectDB()
+	defer Db.Close()
+
+	cmd := `DELETE from sessions
+		WHERE uuid =$1`
+	_, err = Db.Exec(cmd, sess.UUID)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	return err
+}
