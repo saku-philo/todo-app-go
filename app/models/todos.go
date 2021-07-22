@@ -137,9 +137,11 @@ func (t *Todo) DeleteTodo() error {
 	Db, err = connectDB()
 	defer Db.Close()
 
-	cmd := `DELETE from todos WHERE id =$1`
+	cmd := `UPDATE todos
+		SET is_deleted = TRUE, deleted_at =$1
+		WHERE id =$2`
 
-	_, err = Db.Exec(cmd, t.ID)
+	_, err = Db.Exec(cmd, time.Now(), t.ID)
 	if err != nil {
 		log.Fatalln(err)
 	}
