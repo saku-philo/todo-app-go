@@ -40,7 +40,8 @@ func GetTodo(id int) (todo Todo, err error) {
 
 	cmd := `SELECT id, content, user_id, created_at, updated_at
 		FROM todos
-		WHERE id =$1`
+		WHERE id =$1
+		AND is_deleted = FALSE`
 	todo = Todo{}
 
 	err = Db.QueryRow(cmd, id).Scan(
@@ -91,7 +92,8 @@ func (u *User) GetTodosByUser() (todos []Todo, err error) {
 	// Fetch todos data specify user
 	cmd := `SELECT id, content, user_id, created_at, updated_at
 		FROM todos
-		WHERE user_id =$1`
+		WHERE user_id =$1
+		AND is_deleted = FALSE`
 
 	rows, err := Db.Query(cmd, u.ID)
 	if err != nil {
