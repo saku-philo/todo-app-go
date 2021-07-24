@@ -16,5 +16,18 @@ entity "users" {
     deleted_at:timestamp
     is_deleted:boolean
 }
+
+entity "todos" {
+    + id [PK]
+    ==
+    # user_id [FK(users,id)]
+    content:text
+    created_at:timestamp
+    updated_at:timestamp
+    is_deleted:boolean(default:false)
+    deleted_at:timestamp
+}
+
+users --o{ todos
 @enduml
 ```
