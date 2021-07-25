@@ -28,6 +28,17 @@ entity "todos" {
     deleted_at:timestamp
 }
 
+entity "sessions" {
+    + id [PK]
+    ==
+    # user_id [FK(users,id)]
+    * uuid:varchar(255)
+    email:varchar(255)
+    created_at:timestamp
+    updated_at:timestamp
+}
+
 users --o{ todos
+users --|{ sessions
 @enduml
 ```
