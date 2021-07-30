@@ -176,7 +176,8 @@ func (sess *Session) CheckSession() (valid bool, err error) {
 
 	cmd := `SELECT id, uuid, email, user_id, created_at, updated_at
 		FROM sessions
-		WHERE uuid =$1`
+		WHERE uuid =$1
+		AND is_deleted = FALSE`
 
 	err = Db.QueryRow(cmd, sess.UUID).Scan(
 		&sess.ID,
@@ -204,9 +205,10 @@ func (sess *Session) DeleteSessionByUUID() (err error) {
 	Db, err = connectDB()
 	defer Db.Close()
 
-	cmd := `DELETE from sessions
-		WHERE uuid =$1`
-	_, err = Db.Exec(cmd, sess.UUID)
+	cmd := `UPDATE sessions
+		SET is_deleted = TRUE, deleted_at =$1
+		WHERE uuid =$2`
+	_, err = Db.Exec(cmd, time.Now(), sess.UUID)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -221,7 +223,8 @@ func (sess *Session) GetUserBySession() (user User, err error) {
 	user = User{}
 	cmd := `SELECT id, uuid, name, email, created_at, updated_at
 		FROM users
-		WHERE id =$1`
+		WHERE id =$1
+		AND is_deleted = FALSE`
 
 	err = Db.QueryRow(cmd, sess.UserID).Scan(
 		&user.ID,
