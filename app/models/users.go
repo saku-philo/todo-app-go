@@ -155,7 +155,9 @@ func (u *User) CreateSession() (session Session, err error) {
 
 	cmd2 := `SELECT id, uuid, email, user_id, created_at, updated_at
 		FROM sessions
-		WHERE user_id =$1 and email =$2`
+		WHERE user_id =$1
+		AND email =$2
+		AND is_deleted = FALSE`
 
 	err = Db.QueryRow(cmd2, u.ID, u.Email).Scan(
 		&session.ID,
