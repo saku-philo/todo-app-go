@@ -3,3 +3,6 @@ config.ini
 
 # Log file
 webapp.log
+
+# memo file
+memo.md
