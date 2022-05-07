@@ -1,4 +1,11 @@
 # todo-app-go
+todo application
+
+## GO version
+1.11.4
+
+## DB
+PostgreSQL 13.3
 
 ## table
 ```
